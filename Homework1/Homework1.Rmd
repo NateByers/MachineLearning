@@ -1,0 +1,97 @@
+---
+title: 'B529: Homework 1'
+author: "Nathan Byers"
+date: "Tuesday, February 03, 2015"
+output: pdf_document
+---
+
+# Question 1
+*Please use the perceptron algorithm to manually find a weight vector* **w** = [w0,w1,w2]^T^  *for linear classification of 3 data points* (**x**<sub>i</sub>,y<sub>i) *satisfying  sign* (**w**^T^**x**<sub>i</sub>) = y<sub>i</sub>. *The input data is* 
+
+**x**<sub>1</sub>=(1,2,2)^T^  y<sub>1</sub>=+1
+
+**x**<sub>2</sub>=(1,1,2)^T^  y<sub>2</sub>=+1
+
+**x**<sub>3</sub>=(1,2,0)^T^  y<sub>3</sub>=-1
+
+*The first element in vector* **x** is always x<sub>0</sub>=1 *(See slides in lecture 1).*
+
+*In the first step of the perceptron algorithm, the initial assignment of* **w** is [0,6,6]^T^. *Please provide the intermediate steps of the computation. (30 points)*
+
+# Answer 1
+
+* Step 1: **w** = [0,6,6]^T^
+* Step 2: 
+
+$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
+0 & 6 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+1\\ 
+2\\ 
+2
+\end{bmatrix}\right )=sign(24)=1$$
+$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
+0 & 6 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+1\\ 
+1\\ 
+2
+\end{bmatrix}\right )=sign(18)=1$$
+$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
+0 & 6 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+1\\ 
+2\\ 
+0
+\end{bmatrix}\right )=sign(12)\neq -1$$
+$$\boldsymbol{w}=\boldsymbol{w}+y_{3}\boldsymbol{x}_{3}=\begin{bmatrix}
+0\\
+6\\ 
+6
+\end{bmatrix} + -1 \cdot \begin{bmatrix}
+1\\ 
+2\\ 
+0
+\end{bmatrix} = \begin{bmatrix}
+-1\\ 
+4\\ 
+6
+\end{bmatrix}$$
+
+* Step 2: iteration
+
+$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
+-1 & 4 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+1\\ 
+2\\ 
+2
+\end{bmatrix}\right )=sign(19)=1$$
+$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
+-1 & 4 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+1\\ 
+1\\ 
+2
+\end{bmatrix}\right )=sign(15)=1$$
+$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
+-1 & 4 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+1\\ 
+2\\ 
+0
+\end{bmatrix}\right )=sign(7)\neq -1$$
+$$\boldsymbol{w}=\boldsymbol{w}+y_{3}\boldsymbol{x}_{3}=\begin{bmatrix}
+-1\\
+4\\
+6
+\end{bmatrix} + -1 \cdot \begin{bmatrix}
+1\\ 
+2\\ 
+0
+\end{bmatrix} = \begin{bmatrix}
+-2\\ 
+2\\ 
+6
+\end{bmatrix}$$
+
