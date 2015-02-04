@@ -95,3 +95,95 @@ $$\boldsymbol{w}=\boldsymbol{w}+y_{3}\boldsymbol{x}_{3}=\begin{bmatrix}
 6
 \end{bmatrix}$$
 
+* Step 2: iteration
+
+$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
+-2 & 2 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+1\\ 
+2\\ 
+2
+\end{bmatrix}\right )=sign(14)=1$$
+$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
+-2 & 2 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+1\\ 
+1\\ 
+2
+\end{bmatrix}\right )=sign(12)=1$$
+$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
+-2 & 2 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+1\\ 
+2\\ 
+0
+\end{bmatrix}\right )=sign(2)\neq -1$$
+$$\boldsymbol{w}=\boldsymbol{w}+y_{3}\boldsymbol{x}_{3}=\begin{bmatrix}
+-2\\ 
+2\\ 
+6
+\end{bmatrix} + -1 \cdot \begin{bmatrix}
+1\\ 
+2\\ 
+0
+\end{bmatrix} = \begin{bmatrix}
+-4\\ 
+0\\ 
+6
+\end{bmatrix}$$
+
+* Step 2: iteration
+
+$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
+-4 & 0 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+1\\ 
+2\\ 
+2
+\end{bmatrix}\right )=sign(8)=1$$
+$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
+-4 & 0 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+1\\ 
+1\\ 
+2
+\end{bmatrix}\right )=sign(8)=1$$
+$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
+-4 & 0 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+1\\ 
+2\\ 
+0
+\end{bmatrix}\right )=sign(-4) = -1$$
+
+Final **w** = (-4, 0, 6)^T^
+
+# Question 2
+
+*Please use R to manually compute the weight vector* **w** = [w<sub>0</sub>, w<sub>1</sub>, w<sub>2</sub>]^T^ *for linear regression of N input data points* (x<sub>i</sub>,y<sub>i</sub>) *that minimizes the sum of squared error* (**w**^T^**x**<sub>i</sub> – y<sub>i</sub>)^2^. *The input data is* 
+
+**x**<sub>1</sub>=(1,2,3)^T^    y<sub>1</sub> =  2
+     
+**x**<sub>2</sub>=(1,1,2)^T^    y<sub>2</sub> =  1
+
+**x**<sub>3</sub>=(1,1,0)^T^    y<sub>3</sub> = -1
+
+**x**<sub>4</sub>=(1,-1,-2)^T^  y<sub>4</sub>= -2
+
+*The first element in vector* **x** *is always* x<sub>0</sub>=1 *(See slides in lecture 1)*
+
+*Please provide the intermediate steps of the computation (20 points).*
+
+# Answer 2
+
+```{r}
+X <- matrix(c(1, 2, 3, 1, 1, 2, 1, 1, 0, 1, -1, -2), nrow = 4, byrow = TRUE)
+X
+y <- matrix(c(2, 1, -1, -2), ncol = 1)
+y
+Xt <- t(X)
+Xt
+w <- solve(Xt %*% X) %*% Xt %*% y
+w
+```
+
