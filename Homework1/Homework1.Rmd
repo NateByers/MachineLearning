@@ -187,3 +187,34 @@ w <- solve(Xt %*% X) %*% Xt %*% y
 w
 ```
 
+# Question 3
+
+*In Fisher’s linear discriminant analysis, we search for a vector* **w** *such that all data points are well separately after they are projected to the direction defined by* **w**. *When the input data points are* 
+
+x1=(3,4)^T^    y1 =  1
+
+x2=(1,2)^T^    y2 =  1
+
+x3=(1,0)^T^    y3 = -1
+
+x4=(1,-2)^T^  y4=  -1
+
+*(Note that the first element in vector* **x** *is NOT x0=1 in this problem), please use R to manually find a vector* **w**=[w1,w2] *with Fisher’s LDA and provide the intermediate steps (20 points).*
+
+# Answer 3
+Here I create a matrix with each column containing an **x** vector as well as the y scalar.
+```{r}
+Xy <- matrix(c(3, 4, 1, 1, 2, 1, 1, 0, -1, 1, -2, -1), ncol = 4)
+colnames(Xy) <- c("x1hat", "x2hat", "x3hat", "x4hat")
+rownames(Xy) <- c("x1", "x2", "y")
+Xy
+```
+Now I calculate the **m** vectors.
+```{r}
+m1hat <- matrix(apply(Xy[, Xy[3, ] == 1], 1, mean)[-3], ncol = 1)
+rownames(m1hat) <- c("m1", "m2")
+m1hat
+m2hat <- matrix(apply(Xy[, Xy[3, ] == -1], 1, mean)[-3], ncol = 1)
+rownames(m2hat) <- c("m1", "m2")
+m2hat
+```
