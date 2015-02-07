@@ -3,6 +3,21 @@ m1hat <- matrix(c(2, 2), ncol = 1)
 m2hat <- matrix(c(1, 0), ncol = 1)
 M <- matrix(c(rep(m1hat, 3), m2hat), ncol = 4)
 
+outerProduct <- function(i, Xy.matrix, m1, m2){
+  if(Xy.matrix[3, i] == 1){m <- m1} else {m <- m2}
+  v <- Xy.matrix[1:2, i] - m
+  v %*% t(v)
+}
+
+outer.products <- sapply(1:dim(X)[2], outerProduct, Xy.matrix = X,
+                         m1 = m1hat, m2 = m2hat)
+
+onehat <- rep(1, 4)
+
+Sw <- matrix(outer.products %*% onehat, ncol = 2)
+
+
+
 Z <- X[-3, ] - M
 A <- matrix(rep(Z[, 1], 2), ncol = 2)
 for(i in 2:4){

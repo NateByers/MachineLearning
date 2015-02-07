@@ -218,3 +218,59 @@ m2hat <- matrix(apply(Xy[, Xy[3, ] == -1], 1, mean)[-3], ncol = 1)
 rownames(m2hat) <- c("m1", "m2")
 m2hat
 ```
+Then I create a function that takes the difference between an **x** vector and 
+the appropriate **m** vector, and calculates the outer product between that vector
+and its transpose.
+```{r}
+outerProduct <- function(i, Xy.matrix, m1, m2){
+  if(Xy.matrix[3, i] == 1){m <- m1} else {m <- m2}
+  v <- Xy.matrix[1:2, i] - m
+  v %*% t(v)
+}
+```
+Now I loop through the columns of the **Xy** matrix using the `outerProduct()` function, 
+and I get a matrix whose rows can be summed to find the four values of the **Sw** matrix.
+
+```{r}
+products <- sapply(1:dim(Xy)[2], outerProduct, Xy.matrix = Xy,
+                         m1 = m1hat, m2 = m2hat)
+products
+
+Sw <- matrix(rowSums(products), ncol = 2)
+Sw
+```
+
+Now I find the optimal solution, $\mathbf{w}\propto \mathbf{S}_{w}^{-1}(\mathbf{m}_{1}-\mathbf{m}_{2})$.
+
+```{r}
+w <- solve(Sw) %*% (m1hat - m2hat)
+w
+```
+
+# Question 4
+
+*In the problem of determining if a peptide-spectrum-match is a correct one or not, we have the following problem:*
+
+* *Input: scores of peptide spectrum matches:* $\mathbf{x}_{i} = [x]$
+* *Output: if the spectrum is generated from the peptide:* $\mathbf{y}_{i} = +1/-1$
+* *Prior probity:* *P*(*y* = 1)  = 0.1, *P*(*y* = -1) = 0.9
+* *Liklihood:*
+
+$$P(x|y=1)=\frac{1}{2\sqrt{2\pi }}e\frac{-(x-10)^{2}}{8}$$
+
+$$P(x|y=-1)=\frac{1}{\sqrt{2\pi }}e\frac{-(x-5)^{2}}{2}$$ 
+
+* *Cost function:*
+
+*e*(*f*(**x**), *g*(**x**))  | +1  | -1
+---------------------------- | --- | ----
++1                           | 0   | 1000
+-1                           | 1   | 0
+
+*Please compute the classification function that minimizes the cost (error). Please provide the intermediate steps of the computation. (30 points)*
+
+# Answer 4
+
+$$ln\lambda =ln\frac{P(y=-1)}{P(y=1)}\frac{c_{1,-1}}{c_{-1,1}}=ln\frac{0.9}{0.1}\frac{1000}{1}=ln(9.10498)$$
+
+$$ln\mathit{l}(x) =ln\frac{P(\mathbf{x}|y=-1)}{P(\mathbf{x}|y=1)}=ln\frac{1}{2\sqrt{2\pi }}e\frac{-(x-10)^{2}}{8}-ln\frac{1}{\sqrt{2\pi }}e\frac{-(x-5)^{2}}{2}$$
