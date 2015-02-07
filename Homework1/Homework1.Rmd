@@ -1,7 +1,13 @@
 ---
 title: 'B529: Homework 1'
 author: "Nathan Byers"
-date: "Tuesday, February 03, 2015"
+date: "Tuesday, February 7, 2015"
+header-includes:
+- \usepackage{fancyhdr}
+- \pagestyle{fancy}
+- \fancyhead[CO,CE]{B529 Machine Learning}
+- \fancyfoot[CO,CE]{Source https://github.com/NateByers/MachineLearning/tree/master/Homework1}
+- \fancyfoot[LE,RO]{\thepage}
 output: pdf_document
 ---
 
@@ -271,6 +277,12 @@ $$P(x|y=-1)=\frac{1}{\sqrt{2\pi }}e\frac{-(x-5)^{2}}{2}$$
 
 # Answer 4
 
-$$ln\lambda =ln\frac{P(y=-1)}{P(y=1)}\frac{c_{1,-1}}{c_{-1,1}}=ln\frac{0.9}{0.1}\frac{1000}{1}=ln(9.10498)$$
+$$\mathrm{ln}\lambda =\mathrm{ln}\frac{P(y=-1)}{P(y=1)}\frac{c_{1,-1}}{c_{-1,1}}=\mathrm{ln}\frac{0.9}{0.1}\frac{1000}{1}=\mathrm{ln}(9.10498)$$
 
-$$ln\mathit{l}(x) =ln\frac{P(\mathbf{x}|y=-1)}{P(\mathbf{x}|y=1)}=ln\frac{1}{2\sqrt{2\pi }}e\frac{-(x-10)^{2}}{8}-ln\frac{1}{\sqrt{2\pi }}e\frac{-(x-5)^{2}}{2}$$
+$$\mathrm{ln} l(x) =\mathrm{ln}\frac{P(\mathbf{x}|y=-1)}{P(\mathbf{x}|y=1)}=\mathrm{ln}\frac{1}{2\sqrt{2\pi }}e\frac{-(x-10)^{2}}{8}-\mathrm{ln}\frac{1}{\sqrt{2\pi }}e\frac{-(x-5)^{2}}{2}$$
+
+$$=>\mathrm{ln}\frac{1}{2}+\mathrm{ln}\frac{1}{\sqrt{2\pi }}-\frac{1}{8}(x-10)^2-\mathrm{ln}\frac{1}{\sqrt{2\pi}}+\frac{1}{2}(x-5)^{2}$$
+
+$$\mathrm{ln} l(x)>\mathrm{ln}\lambda$$
+
+$$x>6.82375$$

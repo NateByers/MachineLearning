@@ -30,3 +30,5 @@ for(i in 2:4){
 }
 
 V <- A * B
+
+log(9.10498)-log(1/(2*sqrt(2*pi))) +  log(1/sqrt(2*pi))
