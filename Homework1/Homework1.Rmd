@@ -1,7 +1,7 @@
 ---
 title: 'B529: Homework 1'
 author: "Nathan Byers"
-date: "Tuesday, February 7, 2015"
+date: "Tuesday, February 10, 2015"
 header-includes:
 - \usepackage{fancyhdr}
 - \pagestyle{fancy}
@@ -12,15 +12,15 @@ output: pdf_document
 ---
 
 # Question 1
-*Please use the perceptron algorithm to manually find a weight vector* **w** = [w0,w1,w2]^T^  *for linear classification of 3 data points* (**x**<sub>i</sub>,y<sub>i) *satisfying  sign* (**w**^T^**x**<sub>i</sub>) = y<sub>i</sub>. *The input data is* 
+*Please use the perceptron algorithm to manually find a weight vector* $\mathbf{w} = [w_{0},w_{1},w_{2}]^{\mathrm{T}}$  *for linear classification of 3 data points* $(\mathbf{x}_{i},y_{i})$ *satisfying*  $sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{i}) = y_{i}$. *The input data is* 
 
-**x**<sub>1</sub>=(1,2,2)^T^  y<sub>1</sub>=+1
+$\mathbf{x}_{1}=(1,2,2)^{\mathrm{T}}$ $y_{1}=+1$
 
-**x**<sub>2</sub>=(1,1,2)^T^  y<sub>2</sub>=+1
+$\mathbf{x}_{2}=(1,1,2)^{\mathrm{T}}$ $y_{1}=+1$
 
-**x**<sub>3</sub>=(1,2,0)^T^  y<sub>3</sub>=-1
+$\mathbf{x}_{3}=(1,2,0)^{\mathrm{T}}$ $y_{1}=-1$
 
-*The first element in vector* **x** is always x<sub>0</sub>=1 *(See slides in lecture 1).*
+*The first element in vector* **x** *is always* $x_{0}=1$ *(See slides in lecture 1).*
 
 *In the first step of the perceptron algorithm, the initial assignment of* **w** is [0,6,6]^T^. *Please provide the intermediate steps of the computation. (30 points)*
 
@@ -166,17 +166,18 @@ Final **w** = (-4, 0, 6)^T^
 
 # Question 2
 
-*Please use R to manually compute the weight vector* **w** = [w<sub>0</sub>, w<sub>1</sub>, w<sub>2</sub>]^T^ *for linear regression of N input data points* (x<sub>i</sub>,y<sub>i</sub>) *that minimizes the sum of squared error* (**w**^T^**x**<sub>i</sub> – y<sub>i</sub>)^2^. *The input data is* 
+*Please use R to manually compute the weight vector* **w** = [w<sub>0</sub>, w<sub>1</sub>, w<sub>2</sub>]^T^ *for linear regression of N input data points* $(x_{i}, y_{i})$ *that minimizes the sum of squared error* $(\mathbf{w}^{T}\mathbf{x}_{i} – y_{i})^{2}$. *The input data is* 
 
-**x**<sub>1</sub>=(1,2,3)^T^    y<sub>1</sub> =  2
-     
-**x**<sub>2</sub>=(1,1,2)^T^    y<sub>2</sub> =  1
+$\mathbf{x}_{1}=(1,2,2)^{\mathrm{T}}$ $y_{1}=2$
 
-**x**<sub>3</sub>=(1,1,0)^T^    y<sub>3</sub> = -1
+$\mathbf{x}_{2}=(1,1,2)^{\mathrm{T}}$ $y_{1}=1$
 
-**x**<sub>4</sub>=(1,-1,-2)^T^  y<sub>4</sub>= -2
+$\mathbf{x}_{3}=(1,1,0)^{\mathrm{T}}$ $y_{1}=-1$
 
-*The first element in vector* **x** *is always* x<sub>0</sub>=1 *(See slides in lecture 1)*
+$\mathbf{x}_{4}=(1,-1,-2)^{\mathrm{T}}$ $y_{1}=-2$
+
+
+*The first element in vector* **x** *is always* $x_{0}=1$ *(See slides in lecture 1)*
 
 *Please provide the intermediate steps of the computation (20 points).*
 
@@ -197,15 +198,15 @@ w
 
 *In Fisher’s linear discriminant analysis, we search for a vector* **w** *such that all data points are well separately after they are projected to the direction defined by* **w**. *When the input data points are* 
 
-x1=(3,4)^T^    y1 =  1
+$\mathbf{x}_{1}=(3,4)^{\mathrm{T}}$ $y_{1}=1$
 
-x2=(1,2)^T^    y2 =  1
+$\mathbf{x}_{2}=(1,2)^{\mathrm{T}}$ $y_{1}=1$
 
-x3=(1,0)^T^    y3 = -1
+$\mathbf{x}_{3}=(1,0)^{\mathrm{T}}$ $y_{1}=-1$
 
-x4=(1,-2)^T^  y4=  -1
+$\mathbf{x}_{4}=(1,-2)^{\mathrm{T}}$ $y_{1}=-1$
 
-*(Note that the first element in vector* **x** *is NOT x0=1 in this problem), please use R to manually find a vector* **w**=[w1,w2] *with Fisher’s LDA and provide the intermediate steps (20 points).*
+*(Note that the first element in vector* **x** *is NOT* $x_{0}=1$ *in this problem), please use R to manually find a vector* **w**=[w1,w2] *with Fisher’s LDA and provide the intermediate steps (20 points).*
 
 # Answer 3
 Here I create a matrix with each column containing an **x** vector as well as the y scalar.
