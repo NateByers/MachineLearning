@@ -10,47 +10,47 @@ header-includes:
 - \fancyfoot[LE,RO]{\thepage}
 output: pdf_document
 ---
-
+  
 # Question 1
 *Please use the perceptron algorithm to manually find a weight vector* $\mathbf{w} = [w_{0},w_{1},w_{2}]^{\mathrm{T}}$  *for linear classification of 3 data points* $(\mathbf{x}_{i},y_{i})$ *satisfying*  $sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{i}) = y_{i}$. *The input data is* 
-
-$\mathbf{x}_{1}=(1,2,2)^{\mathrm{T}}$ $y_{1}=+1$
-
-$\mathbf{x}_{2}=(1,1,2)^{\mathrm{T}}$ $y_{1}=+1$
-
-$\mathbf{x}_{3}=(1,2,0)^{\mathrm{T}}$ $y_{1}=-1$
-
+  
+$\mathbf{x}_{1}=(1,2,2)^{\mathrm{T}}$, $y_{1}=+1$
+  
+$\mathbf{x}_{2}=(1,1,2)^{\mathrm{T}}$, $y_{1}=+1$
+  
+$\mathbf{x}_{3}=(1,2,0)^{\mathrm{T}}$, $y_{1}=-1$
+  
 *The first element in vector* **x** *is always* $x_{0}=1$ *(See slides in lecture 1).*
-
-*In the first step of the perceptron algorithm, the initial assignment of* **w** is [0,6,6]^T^. *Please provide the intermediate steps of the computation. (30 points)*
-
+  
+*In the first step of the perceptron algorithm, the initial assignment of* **w** *is* [0,6,6]^T^. *Please provide the intermediate steps of the computation. (30 points)*
+  
 # Answer 1
-
+  
 * Step 1: **w** = [0,6,6]^T^
 * Step 2: 
-
-$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
-0 & 6 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-1\\ 
-2\\ 
-2
-\end{bmatrix}\right )=sign(24)=1$$
-$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
-0 & 6 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-1\\ 
-1\\ 
-2
-\end{bmatrix}\right )=sign(18)=1$$
-$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
-0 & 6 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-1\\ 
-2\\ 
-0
-\end{bmatrix}\right )=sign(12)\neq -1$$
-$$\boldsymbol{w}=\boldsymbol{w}+y_{3}\boldsymbol{x}_{3}=\begin{bmatrix}
+  
+$$sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{1})= sign\left ( \begin{bmatrix}
+                                                           0 & 6 & 6
+                                                           \end{bmatrix} \cdot \begin{bmatrix}
+                                                           1\\ 
+                                                           2\\ 
+                                                           2
+                                                           \end{bmatrix}\right )=sign(24)=1$$
+$$sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{1})= sign\left ( \begin{bmatrix}
+                                                           0 & 6 & 6
+                                                           \end{bmatrix} \cdot \begin{bmatrix}
+                                                           1\\ 
+                                                           1\\ 
+                                                           2
+                                                           \end{bmatrix}\right )=sign(18)=1$$
+$$sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{1})= sign\left ( \begin{bmatrix}
+                                                           0 & 6 & 6
+                                                           \end{bmatrix} \cdot \begin{bmatrix}
+                                                           1\\ 
+                                                           2\\ 
+                                                           0
+                                                           \end{bmatrix}\right )=sign(12)\neq -1$$
+$$\mathbf{w}=\mathbf{w}+y_{3}\mathbf{x}_{3}=\begin{bmatrix}
 0\\
 6\\ 
 6
@@ -63,31 +63,31 @@ $$\boldsymbol{w}=\boldsymbol{w}+y_{3}\boldsymbol{x}_{3}=\begin{bmatrix}
 4\\ 
 6
 \end{bmatrix}$$
-
+  
 * Step 2: iteration
 
-$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
--1 & 4 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-1\\ 
-2\\ 
-2
-\end{bmatrix}\right )=sign(19)=1$$
-$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
--1 & 4 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-1\\ 
-1\\ 
-2
-\end{bmatrix}\right )=sign(15)=1$$
-$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
--1 & 4 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-1\\ 
-2\\ 
-0
-\end{bmatrix}\right )=sign(7)\neq -1$$
-$$\boldsymbol{w}=\boldsymbol{w}+y_{3}\boldsymbol{x}_{3}=\begin{bmatrix}
+$$sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{1})= sign\left ( \begin{bmatrix}
+                                                         -1 & 4 & 6
+                                                         \end{bmatrix} \cdot \begin{bmatrix}
+                                                         1\\ 
+                                                         2\\ 
+                                                         2
+                                                         \end{bmatrix}\right )=sign(19)=1$$
+$$sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{1})= sign\left ( \begin{bmatrix}
+                                                           -1 & 4 & 6
+                                                           \end{bmatrix} \cdot \begin{bmatrix}
+                                                           1\\ 
+                                                           1\\ 
+                                                           2
+                                                           \end{bmatrix}\right )=sign(15)=1$$
+$$sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{1})= sign\left ( \begin{bmatrix}
+                                                           -1 & 4 & 6
+                                                           \end{bmatrix} \cdot \begin{bmatrix}
+                                                           1\\ 
+                                                           2\\ 
+                                                           0
+                                                           \end{bmatrix}\right )=sign(7)\neq -1$$
+$$\mathbf{w}=\mathbf{w}+y_{3}\mathbf{x}_{3}=\begin{bmatrix}
 -1\\
 4\\
 6
@@ -100,31 +100,31 @@ $$\boldsymbol{w}=\boldsymbol{w}+y_{3}\boldsymbol{x}_{3}=\begin{bmatrix}
 2\\ 
 6
 \end{bmatrix}$$
-
+  
 * Step 2: iteration
 
-$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
--2 & 2 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-1\\ 
-2\\ 
-2
-\end{bmatrix}\right )=sign(14)=1$$
-$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
--2 & 2 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-1\\ 
-1\\ 
-2
-\end{bmatrix}\right )=sign(12)=1$$
-$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
--2 & 2 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-1\\ 
-2\\ 
-0
-\end{bmatrix}\right )=sign(2)\neq -1$$
-$$\boldsymbol{w}=\boldsymbol{w}+y_{3}\boldsymbol{x}_{3}=\begin{bmatrix}
+$$sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{1})= sign\left ( \begin{bmatrix}
+                                                         -2 & 2 & 6
+                                                         \end{bmatrix} \cdot \begin{bmatrix}
+                                                         1\\ 
+                                                         2\\ 
+                                                         2
+                                                         \end{bmatrix}\right )=sign(14)=1$$
+$$sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{1})= sign\left ( \begin{bmatrix}
+                                                           -2 & 2 & 6
+                                                           \end{bmatrix} \cdot \begin{bmatrix}
+                                                           1\\ 
+                                                           1\\ 
+                                                           2
+                                                           \end{bmatrix}\right )=sign(12)=1$$
+$$sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{1})= sign\left ( \begin{bmatrix}
+                                                           -2 & 2 & 6
+                                                           \end{bmatrix} \cdot \begin{bmatrix}
+                                                           1\\ 
+                                                           2\\ 
+                                                           0
+                                                           \end{bmatrix}\right )=sign(2)\neq -1$$
+$$\mathbf{w}=\mathbf{w}+y_{3}\mathbf{x}_{3}=\begin{bmatrix}
 -2\\ 
 2\\ 
 6
@@ -137,50 +137,50 @@ $$\boldsymbol{w}=\boldsymbol{w}+y_{3}\boldsymbol{x}_{3}=\begin{bmatrix}
 0\\ 
 6
 \end{bmatrix}$$
-
+  
 * Step 2: iteration
 
-$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
--4 & 0 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-1\\ 
-2\\ 
-2
-\end{bmatrix}\right )=sign(8)=1$$
-$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
--4 & 0 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-1\\ 
-1\\ 
-2
-\end{bmatrix}\right )=sign(8)=1$$
-$$sign(\boldsymbol{w}^{T}\boldsymbol{x}_{1})= sign\left ( \begin{bmatrix}
--4 & 0 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-1\\ 
-2\\ 
-0
-\end{bmatrix}\right )=sign(-4) = -1$$
-
-Final **w** = (-4, 0, 6)^T^
-
+$$sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{1})= sign\left ( \begin{bmatrix}
+                                                         -4 & 0 & 6
+                                                         \end{bmatrix} \cdot \begin{bmatrix}
+                                                         1\\ 
+                                                         2\\ 
+                                                         2
+                                                         \end{bmatrix}\right )=sign(8)=1$$
+$$sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{1})= sign\left ( \begin{bmatrix}
+                                                           -4 & 0 & 6
+                                                           \end{bmatrix} \cdot \begin{bmatrix}
+                                                           1\\ 
+                                                           1\\ 
+                                                           2
+                                                           \end{bmatrix}\right )=sign(8)=1$$
+$$sign(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{1})= sign\left ( \begin{bmatrix}
+                                                           -4 & 0 & 6
+                                                           \end{bmatrix} \cdot \begin{bmatrix}
+                                                           1\\ 
+                                                           2\\ 
+                                                           0
+                                                           \end{bmatrix}\right )=sign(-4) = -1$$
+  
+* Final **w** = (-4, 0, 6)^T^
+  
 # Question 2
-
-*Please use R to manually compute the weight vector* **w** = [w<sub>0</sub>, w<sub>1</sub>, w<sub>2</sub>]^T^ *for linear regression of N input data points* $(x_{i}, y_{i})$ *that minimizes the sum of squared error* $(\mathbf{w}^{T}\mathbf{x}_{i} – y_{i})^{2}$. *The input data is* 
-
-$\mathbf{x}_{1}=(1,2,2)^{\mathrm{T}}$ $y_{1}=2$
-
-$\mathbf{x}_{2}=(1,1,2)^{\mathrm{T}}$ $y_{1}=1$
-
-$\mathbf{x}_{3}=(1,1,0)^{\mathrm{T}}$ $y_{1}=-1$
-
-$\mathbf{x}_{4}=(1,-1,-2)^{\mathrm{T}}$ $y_{1}=-2$
-
-
+  
+*Please use R to manually compute the weight vector* **w** = [w<sub>0</sub>, w<sub>1</sub>, w<sub>2</sub>]^T^ *for linear regression of N input data points* $(x_{i}, y_{i})$ *that minimizes the sum of squared error* $(\mathbf{w}^{\mathrm{T}}\mathbf{x}_{i}-y_{i})^{2}$. *The input data is* 
+  
+$\mathbf{x}_{1}=(1,2,2)^{\mathrm{T}}$, $y_{1}=2$
+  
+$\mathbf{x}_{2}=(1,1,2)^{\mathrm{T}}$, $y_{1}=1$
+  
+$\mathbf{x}_{3}=(1,1,0)^{\mathrm{T}}$, $y_{1}=-1$
+  
+$\mathbf{x}_{4}=(1,-1,-2)^{\mathrm{T}}$, $y_{1}=-2$
+  
+  
 *The first element in vector* **x** *is always* $x_{0}=1$ *(See slides in lecture 1)*
-
+  
 *Please provide the intermediate steps of the computation (20 points).*
-
+  
 # Answer 2
 
 ```{r}
@@ -197,17 +197,17 @@ w
 # Question 3
 
 *In Fisher’s linear discriminant analysis, we search for a vector* **w** *such that all data points are well separately after they are projected to the direction defined by* **w**. *When the input data points are* 
-
-$\mathbf{x}_{1}=(3,4)^{\mathrm{T}}$ $y_{1}=1$
-
-$\mathbf{x}_{2}=(1,2)^{\mathrm{T}}$ $y_{1}=1$
-
-$\mathbf{x}_{3}=(1,0)^{\mathrm{T}}$ $y_{1}=-1$
-
-$\mathbf{x}_{4}=(1,-2)^{\mathrm{T}}$ $y_{1}=-1$
-
-*(Note that the first element in vector* **x** *is NOT* $x_{0}=1$ *in this problem), please use R to manually find a vector* **w**=[w1,w2] *with Fisher’s LDA and provide the intermediate steps (20 points).*
-
+  
+$\mathbf{x}_{1}=(3,4)^{\mathrm{T}}$, $y_{1}=1$
+  
+$\mathbf{x}_{2}=(1,2)^{\mathrm{T}}$, $y_{1}=1$
+  
+$\mathbf{x}_{3}=(1,0)^{\mathrm{T}}$, $y_{1}=-1$
+  
+$\mathbf{x}_{4}=(1,-2)^{\mathrm{T}}$, $y_{1}=-1$
+  
+*(Note that the first element in vector* **x** *is NOT* $x_{0}=1$ *in this problem), please use R to manually find a vector* $\mathbf{w}=[w_{1},w_{2}]$ *with Fisher’s LDA and provide the intermediate steps (20 points).*
+  
 # Answer 3
 Here I create a matrix with each column containing an **x** vector as well as the y scalar.
 ```{r}
@@ -240,7 +240,7 @@ and I get a matrix whose rows can be summed to find the four values of the **Sw*
 
 ```{r}
 products <- sapply(1:dim(Xy)[2], outerProduct, Xy.matrix = Xy,
-                         m1 = m1hat, m2 = m2hat)
+                   m1 = m1hat, m2 = m2hat)
 products
 
 Sw <- matrix(rowSums(products), ncol = 2)
@@ -257,33 +257,48 @@ w
 # Question 4
 
 *In the problem of determining if a peptide-spectrum-match is a correct one or not, we have the following problem:*
-
+  
 * *Input: scores of peptide spectrum matches:* $\mathbf{x}_{i} = [x]$
 * *Output: if the spectrum is generated from the peptide:* $\mathbf{y}_{i} = +1/-1$
 * *Prior probity:* *P*(*y* = 1)  = 0.1, *P*(*y* = -1) = 0.9
 * *Liklihood:*
-
+  
 $$P(x|y=1)=\frac{1}{2\sqrt{2\pi }}e\frac{-(x-10)^{2}}{8}$$
-
+  
 $$P(x|y=-1)=\frac{1}{\sqrt{2\pi }}e\frac{-(x-5)^{2}}{2}$$ 
-
+  
 * *Cost function:*
-
+  
 *e*(*f*(**x**), *g*(**x**))  | +1  | -1
 ---------------------------- | --- | ----
 +1                           | 0   | 1000
 -1                           | 1   | 0
 
 *Please compute the classification function that minimizes the cost (error). Please provide the intermediate steps of the computation. (30 points)*
-
+  
 # Answer 4
-
-$$\mathrm{ln}\lambda =\mathrm{ln}\frac{P(y=-1)}{P(y=1)}\frac{c_{1,-1}}{c_{-1,1}}=\mathrm{ln}\frac{0.9}{0.1}\frac{1000}{1}=\mathrm{ln}(9.10498)$$
-
+  
+$$\mathrm{ln}\lambda =\mathrm{ln}\frac{P(y=-1)}{P(y=1)}\frac{c_{1,-1}}{c_{-1,1}}=\mathrm{ln}\frac{0.9}{0.1}\frac{1000}{1}=\mathrm{ln}(9000)$$
+  
 $$\mathrm{ln} l(x) =\mathrm{ln}\frac{P(\mathbf{x}|y=-1)}{P(\mathbf{x}|y=1)}=\mathrm{ln}\frac{1}{2\sqrt{2\pi }}e\frac{-(x-10)^{2}}{8}-\mathrm{ln}\frac{1}{\sqrt{2\pi }}e\frac{-(x-5)^{2}}{2}$$
-
+  
 $$=>\mathrm{ln}\frac{1}{2}+\mathrm{ln}\frac{1}{\sqrt{2\pi }}-\frac{1}{8}(x-10)^2-\mathrm{ln}\frac{1}{\sqrt{2\pi}}+\frac{1}{2}(x-5)^{2}$$
-
+  
 $$\mathrm{ln} l(x)>\mathrm{ln}\lambda$$
 
-$$x>6.82375$$
+$$\mathrm{ln}\frac{1}{2}-\frac{1}{8}(x-10)^2+\frac{1}{2}(x-5)^{2}>\mathrm{ln}(9000)$$
+
+$$8(-\frac{1}{8}(x-10)^2+\frac{1}{2}(x-5)^{2})>8(\mathrm{ln}(9000)-\mathrm{ln}\frac{1}{2})$$
+
+$$-(x^2-20x+100)+4(x^2-10x+25)>8(\mathrm{ln}(9000)-\mathrm{ln}\frac{1}{2})$$
+
+$$-x^2+20x-100+4x^2-40x+100>8(\mathrm{ln}(9000)-\mathrm{ln}\frac{1}{2})$$
+
+$$3x^2-20x>8(\mathrm{ln}(9000)-\mathrm{ln}\frac{1}{2})$$
+
+$$3x^2-20x-8(\mathrm{ln}(9000)-\mathrm{ln}\frac{1}{2})>0$$
+
+The quadratic roots give the inequalities $x<-2.76908$ and $x>9.43575$.
+
+Answer: $x>9.43575$
+  
