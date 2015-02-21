@@ -1,0 +1,71 @@
+---
+title: 'B529: Homework 2'
+author: "Nathan Byers"
+date: "Friday, February 24, 2015"
+output: pdf_document
+---
+
+# Question 1
+
+*A scoring function (classifier) assigned scores for 10 positive data points and 10 negative ones as follows:*
+
+```{r, echo=FALSE}
+data <- read.csv("C:\\Repositories\\MachineLearning\\Homework2\\homework2.csv", stringsAsFactors = FALSE)
+library(knitr)
+kable(data)
+```
+
+*Compute FPR and TPR for each score threshold in 3, 4, 5, 6, 7, 8, 9, 10, and plot the ROC curve of the scoring function (25 points).*
+
+# Answer 1
+
+Below is a histogram for the assigned scores.
+
+```{r, echo=FALSE, message=FALSE}
+library(ggplot2)
+ggplot(data, aes(Score, fill = Label)) + geom_histogram(alpha = 0.5, aes(y = ..density..), position = 'identity')
+```
+
+Looking at the densities, it appears that Negative has lower scores than Positive. If we choose 3 as the cutoff ($\leq 3$ is Negative, $>3$ is Positive), then we get the table below (the column headers indicate the target function and the first column indicates the outcome function).
+
+
+|    |  +1 |  -1
+|----+-----+----
+| +1 |   2 |   0
+| -1 |   8 |  10
+
+The false positive rate is $\frac{0}{0+10}=0$ and the true positive rate is $\frac{2}{2+10}=0.2$.
+
+If 4 is the cutoff:
+
+|    |  +1 |  -1
+|----+-----+----
+| +1 |   2 |   1
+| -1 |   8 |  9
+
+$FPR=\frac{0}{0+10}=0$ and $TPR=\frac{2}{2+10}=0.2$.
+
+For all of the cutoffs, we get the following table and ROC curve:
+
+\pagebreak
+
+| Score    |  TP |  P  | TPR |  FP | N  | FPR
+|----------+-----+-----+-----+-----+----+----
+| $\leq 10$ |  10 |  10 | 1   | 10  | 10 | 1
+| $\leq 9$ |  10 |  10 | 1   |  8  | 10 | 0.8
+| $\leq 8$ |  10 |  10 | 1   |  6  | 10 | 0.6
+| $\leq 7$ |  10 |  10 | 1   |  2  | 10 | 0.2
+| $\leq 6$ |   7 |  10 | 0.7 |  2  | 10 | 0.2
+| $\leq 5$ |   4 |  10 | 0.4 |  2  | 10 | 0.2
+| $\leq 4$ |   2 |  10 | 0.2 |  1  | 10 | 0.1
+| $\leq 3$ |   2 |  10 | 0.2 |  0  | 10 | 0
+
+```{r, echo=FALSE, message=FALSE}
+library(ROCR)
+pred <- prediction(data$Score, data$Label)
+perf <- performance(pred,"tpr","fpr")
+plot(perf)
+```
+
+
+
