@@ -75,7 +75,7 @@ plot(perf)
 
 # Question 2
 
-*The abundance of a protein follows a normal distribution* $f(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{(x-\theta)^{2}}{2}}$* Four measurements reported the following abundance values:  10, 13, 17, and 18. Use the maximum likelihood estimation method to estimate the value for parameter $\theta$. (25 points)*
+*The abundance of a protein follows a normal distribution* $f(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{(x-\theta)^{2}}{2}}$. *Four measurements reported the following abundance values:  10, 13, 17, and 18. Use the maximum likelihood estimation method to estimate the value for parameter $\theta$. (25 points)*
 
 # Answer 2
 
@@ -152,7 +152,7 @@ $x_{1}$  | $x_{2}$ |  y
 
 # Answer 4
 First I train the network using the `neuralnet()` function.
-```{r}
+```{r, message=FALSE}
 library(neuralnet)
 network <- read.csv("C:\\Repositories\\MachineLearning\\Homework2\\network.csv", 
                     stringsAsFactors = FALSE)
