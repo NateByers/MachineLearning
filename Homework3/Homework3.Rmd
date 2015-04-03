@@ -11,6 +11,143 @@ In the clustering problems, the input data set contains the following six data p
 
 # Answer 1
 
+First I read the points into R and plot them.
+
+```{r, fig.height=3, fig.width=3}
+x <- c(1, 0, 1, 3, 4, 5)
+y <- c(1, 1, 0, 3, 4, 4)
+seed1 <- c(3, 3)
+seed2 <- c(5, 4)
+
+plot(x = x, y = y)
+points(c(seed1[1], seed2[1]),
+       c(seed1[2], seed2[2]),
+       col = c("red", "blue"),
+       pch = 19)
+```
+
+Then I create a data frame that gives the initial state of the points.
+
+```{r}
+group.df <- data.frame(x, y, group = NA,
+                       centr_x = NA, centr_y = NA)
+group.df[group.df$x == 3 & 
+           group.df$y == 3, 
+         c("group", "centr_x", "centr_y")] <- c(1, 3, 3)
+
+group.df[group.df$x == 5 & 
+           group.df$y == 4,
+         c("group", "centr_x", "centr_y")] <- c(2, 5, 4)
+
+manDist <- function(x, y, centr_x, centr_y){
+  abs(centr_x - x) + 
+    abs(centr_y - y)
+}
+
+group.df$dist1 <- unlist(mapply(manDist, group.df$x,
+                       group.df$y,
+                       MoreArgs = list(
+                         centr_x = seed1[1],
+                         centr_y = seed1[2])))
+
+group.df$dist2 <- unlist(mapply(manDist, group.df$x,
+                                group.df$y,
+                                MoreArgs = list(
+                                  centr_x = seed2[1],
+                                  centr_y = seed2[2])))
+
+group.df$group <- apply(group.df, 1, function(row){
+  if(row["dist1"] == 
+       min(row[c("dist1", "dist2")])){
+    1
+  }else{2}
+})
+
+group.df$change <- NA
+
+group.df
+```
+
+Now we find the new centroids, recalculate the distances from each point to
+the new centroids, and regroup the points according to the shortest Manhatten 
+distance to the new centroids.
+
+```{r}
+reGroup <- function(df){
+  center_x1 <- mean(df[df$group == 1, "x"])
+  center_y1 <- mean(df[df$group == 1, "y"])
+  center_x2 <- mean(df[df$group == 2, "x"])
+  center_y2 <- mean(df[df$group == 2, "y"])
+  df[df$group == 1, "centr_x"] <- center_x1
+  df[df$group == 1, "centr_y"] <- center_y1
+  df[df$group == 2, "centr_x"] <- center_x2
+  df[df$group == 2, "centr_y"] <- center_y2
+  df$dist1 <- unlist(mapply(manDist, df$x,
+                            df$y,
+                            MoreArgs = list(
+                              centr_x = center_x1,
+                              centr_y = center_y1)))
+  df$dist2 <- unlist(mapply(manDist, df$x,
+                            df$y,
+                            MoreArgs = list(
+                              centr_x = center_x2,
+                              centr_y = center_y2)))
+  g.initial <- df$group
+  g <- apply(df, 1, function(row){
+    if(row["dist1"] != row["dist2"]){
+      if(row["dist1"] == 
+           min(row[c("dist1", "dist2")])){
+        1
+      }else{2}
+    }else{0}
+  })
+  df$group <- g
+  df$change <- sapply(1:length(g), function(i){
+    !(g[i] == g.initial[i])
+  })
+  df
+}
+
+group.df2 <- reGroup(group.df)
+
+group.df2
+```
+
+We can see that at least one point changed. Below is a plot of the new groups.
+
+```{r, fig.height=3, fig.width=3}
+plotGroups <- function(df){
+  group.cols <- df$group
+  group.cols[group.cols == 1] <- "red"
+  group.cols[group.cols == 2] <- "blue"
+  group.cols[group.cols == 0] <- "black"
+  plot(df$x, df$y, pch = 19,
+       col = group.cols)
+}
+
+plotGroups(group.df2)
+
+```
+
+Now we regroup again, because at least one point changed groups in the last
+iteration.
+
+```{r, fig.height=3, fig.width=3}
+group.df3 <- reGroup(group.df2)
+
+plotGroups(group.df3)
+
+group.df3
+
+```
+
+We can see in the table that no points have changed groups, and the plot looks the
+same as the plot in the last iteration. So we stop here, because the algorithm has
+converged.
+
+
+
+
 # Question 2
 
 Suppose DNA bases in a protein-coding region follow the distribution: 
@@ -25,6 +162,18 @@ T          $\frac{1}{4} - \theta $
 In an experiment, the number of observed “A” or “C” bases at the position is x, and the number of observed “G” or “T” bases at the position is y. The EM algorithm can be used to find parameter $\theta $. Describe the Expectation step and Maximization step in the EM algorithm (25 points)
 
 # Answer 2
+
+If the number of A, C, G, and T bases are a, c, g, and t respectively, then the likelihood is
+
+$$P(a, c, g, t | \theta) = C(\theta)^{a}\left(\frac{1}{4}\right)^{c}\left(\frac{1}{2}\right)^{g}\left(\frac{1}{4}-\theta\right)^{t}$$
+
+We take the log, take the derivative with respect to $\theta$, and set it equal to 0 to solve for $\theta$.
+
+$$\ln P(a, c, g, t | \theta) = \ln C + a\ln\theta + c\ln\frac{1}{4} + g\ln\frac{1}{2} + t\ln\left(\frac{1}{4}-\theta\right)$$
+
+$$\frac{\partial }{\partial \theta }\ln P(a, c, g, t | \theta) = \frac{a}{\theta} - \frac{t}{\frac{1}{4}-\theta}=0$$
+
+$$\theta = \frac{a}{4(t+a)}$$
 
 # Question 3
 
@@ -43,4 +192,4 @@ $\geq 25$  >50K    M       Low
 
 # Question 4
 
-A linear SVM is used to analyze a 2-dimensional data set, and the solution $\alpha $ to the quadratic programming program contains only three non-zero elements $\alpha _{1} = 0.05 $, $\alpha _{2} = 0.05 $, and $\alpha _{3} = 0.1 $. The corresponding input data points are $\mathbf{x}_{1} = [0,3]^{T} $, $y_{1} = 1 $, $\mathbf{x}_{2} = [2,4]^{T} $, $y_{2} = 1$, $\mathbf{x}_{3} = [3,-0.5]^{T} $, $y_{3} = -1 $. Compute the weight vector **w** and parameter b for the separating line with the maximum margin (15 points). Compute the margin of the separating line (10 points). 
+A linear SVM is used to analyze a 2-dimensional data set, and the solution $\alpha $ to the quadratic programming program contains only three non-zero elements $\alpha _{1} = 0.05 $, $\alpha _{2} = 0.05 $, and $\alpha_{3} = 0.1 $. The corresponding input data points are $\mathbf{x}_{1} = [0,3]^{T} $, $y_{1} = 1 $, $\mathbf{x}_{2} = [2,4]^{T} $, $y_{2} = 1$, $\mathbf{x}_{3} = [3,-0.5]^{T} $, $y_{3} = -1 $. Compute the weight vector **w** and parameter b for the separating line with the maximum margin (15 points). Compute the margin of the separating line (10 points). 
