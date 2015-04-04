@@ -146,8 +146,6 @@ same as the plot in the last iteration. So we stop here, because the algorithm h
 converged.
 
 
-
-
 # Question 2
 
 Suppose DNA bases in a protein-coding region follow the distribution: 
@@ -174,6 +172,45 @@ $$\ln P(a, c, g, t | \theta) = \ln C + a\ln\theta + c\ln\frac{1}{4} + g\ln\frac{
 $$\frac{\partial }{\partial \theta }\ln P(a, c, g, t | \theta) = \frac{a}{\theta} - \frac{t}{\frac{1}{4}-\theta}=0$$
 
 $$\theta = \frac{a}{4(t+a)}$$
+
+We know $\frac{a}{c}=\frac{\theta}{\frac{1}{4}}$ and $a + c = x$, so $a=\frac{c\theta}{\frac{1}{4}}=\frac{(x-a)\theta}{\frac{1}{4}}=\frac{\theta}{\frac{1}{4}+\theta}x$. We also know $\frac{t}{g}=\frac{\frac{1}{4}-\theta}{\frac{1}{2}} $ and $g+t=y$, so $t=\frac{(\frac{1}{4}-\theta)g}{\frac{1}{2}}=\frac{(\frac{1}{4}-\theta)(y-t)}{\frac{1}{2}}=\frac{\frac{1}{4}-\theta}{\frac{3}{4}-\theta}y $. For the algorithm, we give an initial value to $\theta$, and if we know the value of x and y, we solve for a and t. Using these initial values we solve for a new $\theta$,
+
+$$\theta_{new} = \frac{a}{4(t+a)}$$
+
+We then use $\theta_{new}$ to find $a_{new}$ and $t_{new}$. The steps are repeated until convergence.
+
+Suppose x = 12,000 and y = 13,000 and the initial $\theta$ is 0.1. Below is the EM algorithm.
+
+```{r}
+theta <- 0.1
+calcA <- function(theta, x = 12000){
+  (x * theta)/((1/4) + theta)
+}
+calcT <- function(theta, y = 13000){
+  (((1/4) - theta) * y)/((3/4)-theta)
+}
+calcTheta <- function(a, t){
+  a/(4 * ( t+ a))
+}
+  
+em.df <- data.frame(n = 0, a = NA, t = NA, theta = theta)
+theta.diff <- theta
+while(theta.diff> 0.00001){
+  n.last = em.df[nrow(em.df), "n"]
+  theta.old = em.df[em.df$n == n.last, "theta"]
+  a.new = calcA(theta.old)
+  t.new = calcT(theta.old)
+  theta.new = calcTheta(a.new, t.new)
+  n.new = n.last + 1
+  em.new.df = data.frame(n = n.new, a = a.new,
+                          t = t.new, theta = theta.new)
+  em.df <<- rbind(em.df, em.new.df) 
+  theta.diff <<- abs(theta.new - theta.old)
+  if(n.new > 1000) break
+}
+em.df
+```
+
 
 # Question 3
 

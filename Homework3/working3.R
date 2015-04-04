@@ -101,8 +101,34 @@ group.df3 <- reGroup(group.df2)
 
 plotGroups(group.df3)
 
-myK_Cluster <- function(df){
-  df2 <- reGroup(df)
-  n <- 1
-  while()
+
+###################################################################################
+theta <- 0.1
+calcA <- function(theta, x = 12000){
+  (x * theta)/((1/4) + theta)
 }
+calcT <- function(theta, y = 13000){
+  (((1/4) - theta) * y)/((3/4)-theta)
+}
+calcTheta <- function(a, t){
+  a/(4 * ( t+ a))
+}
+  
+em.df <- data.frame(n = 0, a = NA, t = NA, theta = theta)
+theta.diff <- theta
+while(theta.diff> 0.00001){
+  n.last = em.df[nrow(em.df), "n"]
+  theta.old = em.df[em.df$n == n.last, "theta"]
+  a.new = calcA(theta.old)
+  t.new = calcT(theta.old)
+  theta.new = calcTheta(a.new, t.new)
+  n.new = n.last + 1
+  em.new.df = data.frame(n = n.new, a = a.new,
+                          t = t.new, theta = theta.new)
+  em.df <<- rbind(em.df, em.new.df) 
+  theta.diff <<- abs(theta.new - theta.old)
+  if(n.new > 1000) break
+}
+
+
+
