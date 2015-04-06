@@ -69,7 +69,7 @@ group.df
 ```
 
 Now we find the new centroids, recalculate the distances from each point to
-the new centroids, and regroup the points according to the shortest Manhatten 
+the new centroids, and regroup the points according to the shortest Manhattan 
 distance to the new centroids.
 
 ```{r}
@@ -208,7 +208,8 @@ while(theta.diff> 0.00001){
   theta.diff <<- abs(theta.new - theta.old)
   if(n.new > 1000) break
 }
-em.df
+head(em.df)
+tail(em.df)
 ```
 
 

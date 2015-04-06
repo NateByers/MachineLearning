@@ -130,5 +130,98 @@ while(theta.diff> 0.00001){
   if(n.new > 1000) break
 }
 
+######################################################################################
+
+age <- factor(c(0, 0, 1, 1, 1, 0)) # 0 = <25, 1 = >25
+income <- factor(c(0, 0, 1, 0, 0, 1)) # 0 = >50K, 1 = <50K
+gender <- factor(c(0, 1, 1, 1, 0, 0)) # 0 = M, 1 = F
+risk <- factor(c(0, 0, 0, 1, 1, 0)) # 0 = High, 1 = Low
 
 
+
+income.split <- split(risk, income)
+
+sum(as.numeric(levels(income.split[["0"]]))[income.split[["0"]]])/length(income.split[["0"]])
+
+sum(as.numeric(levels(income.split[["1"]]))[age.split[["1"]]])/length(income.split[["1"]])
+
+calcEntropy <- function(split.factor, outcome){
+  # split.factor = income
+  # outcome = risk
+  split.outcome <- split(outcome, split.factor)
+  outcome.list <- sapply(split.outcome, function(x){
+    sum(as.numeric(levels(x))[x])/length(x)
+  }
+  )
+  sapply(outcome.list,
+  function(y) {
+    entropy = -y * log(y, base = 2)
+  if(is.nan(entropy)){
+    0
+  }else{
+    entropy
+  }
+  }
+  )
+}
+
+
+####################################################################################################################
+age <- factor(c(0, 0, 1, 1, 1, 0), labels = c("<25", ">25")) # 0 = <25, 1 = >25
+income <- factor(c(0, 0, 1, 0, 0, 1), labels = c(">50k", "<50k")) # 0 = >50K, 1 = <50K
+gender <- factor(c(0, 1, 1, 1, 0, 0), labels = c("M", "F")) # 0 = M, 1 = F
+risk <- factor(c(0, 0, 0, 1, 1, 0), labels = c("High", "Low")) # 0 = High, 1 = Low
+
+df <- data.frame(age, income, gender, risk)
+
+library(dplyr)
+
+calcEntropy <- function(split.factor, outcome){
+  # split.factor = age
+  # outcome = risk
+  # get proportions
+  proportions = sapply(split(split.factor, split.factor),
+                       function(level, total){length(level)/total},
+                       total = length(split.factor))
+  if(identical(split.factor, outcome)){
+    sum(sapply(proportions, function(x) -x * log(x, 2)))
+  }else{
+  # put in data frame, group by factor and outcome,
+  # get total counts
+  df = data.frame(split.factor, outcome, I = 1)
+  df = group_by(df, split.factor, outcome)
+  df.sum = summarize(df, count = sum(I))
+  # get the levels of the split.factor and subset
+  split.levels = levels(split.factor)
+  df.split1 = filter(df.sum, split.factor == split.levels[1])
+  # entropy of outcome after split, level 1
+  entropy1 = sapply(df.split1$count, function(x, total) {x/total},
+                    total = sum(df.split1$count))
+  entropy1 = sum(sapply(entropy1, function(x) -x * log(x, 2)))
+  # entropy of outcome after split, level 1
+  df.split2 = filter(df.sum, split.factor == split.levels[2])
+  entropy2 = sapply(df.split2$count, function(x, total) {x/total},
+                    total = sum(df.split2$count))
+  entropy2 = sum(sapply(entropy2, function(x) -x * log(x, 2)))
+  # sum entropies proportionally
+  proportions[[1]] * entropy1 + proportions[[2]] * entropy2
+  }
+}
+
+calcEntropy(gender, risk)
+
+
+entropy.list <- lapply(df, calcEntropy, outcome = df$risk)
+
+information.gain <- entropy.list[[4]] - unlist(entropy.list[1:3]) 
+
+df.age.split <- lapply(levels(age), 
+                       function(i) df[df$age == i, 
+                                      c("income", "gender", "risk")])
+
+df.age.split
+
+entropy.list2 <- lapply(df.age.split[[2]], calcEntropy, 
+                        outcome = df.age.split[[2]]$risk)
+
+information.gain2 <- entropy.list[[3]] - unlist(entropy.list2[1:2])
