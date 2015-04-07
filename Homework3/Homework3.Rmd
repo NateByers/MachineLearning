@@ -17,7 +17,7 @@ In the clustering problems, the input data set contains the following six data p
 
 # Answer 1
 
-First I read the points into R and plot them.
+First I create the points in R and plot them.
 
 ```{r, fig.height=3, fig.width=3}
 x <- c(1, 0, 1, 3, 4, 5)
@@ -275,7 +275,7 @@ calcEntropy <- function(split.factor, outcome){
   entropy1 = sapply(df.split1$count, function(x, total) {x/total},
                     total = sum(df.split1$count))
   entropy1 = sum(sapply(entropy1, function(x) -x * log(x, 2)))
-  # entropy of outcome after split, level 1
+  # entropy of outcome after split, level 2
   df.split2 = filter(df.sum, split.factor == split.levels[2])
   entropy2 = sapply(df.split2$count, function(x, total) {x/total},
                     total = sum(df.split2$count))
