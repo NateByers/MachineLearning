@@ -214,6 +214,12 @@ while(theta.diff> 0.00001){
   theta.diff <<- abs(theta.new - theta.old)
   if(n.new > 1000) break
 }
+
+```
+
+The algorithm converged after 67 iterations
+
+```{r}
 head(em.df)
 tail(em.df)
 ```
