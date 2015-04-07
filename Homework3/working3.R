@@ -221,7 +221,14 @@ df.age.split <- lapply(levels(age),
 
 df.age.split
 
-entropy.list2 <- lapply(df.age.split[[2]], calcEntropy, 
-                        outcome = df.age.split[[2]]$risk)
+
+df2 <- df.age.split[[2]]
+
+entropy.list2 <- lapply(df2, calcEntropy, 
+                        outcome = df2$risk)
 
 information.gain2 <- entropy.list[[3]] - unlist(entropy.list2[1:2])
+
+df.income.split <- lapply(levels(income),
+                          function(i) df2[df2$income == i,
+                                          c("gender", "risk")])

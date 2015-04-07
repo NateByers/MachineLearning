@@ -2,6 +2,12 @@
 title: 'B529: Homework 3'
 author: "Nathan Byers"
 date: "Wednesday, April 7, 2015"
+header-includes:
+- \usepackage{fancyhdr}
+- \pagestyle{fancy}
+- \fancyhead[CO,CE]{B529 Machine Learning}
+- \fancyfoot[CO,CE]{Source https://github.com/NateByers/MachineLearning/tree/master/Homework3}
+- \fancyfoot[LE,RO]{\thepage}
 output: pdf_document
 ---
 
@@ -228,6 +234,139 @@ $\geq 25$  >50K    M       Low
 
 # Answer 3
 
+First, I put the factors in a data frame and write a function for finding the 
+entropy of a factor based on how it splits the risk column.
+
+```{r, message=FALSE}
+age <- factor(c(0, 0, 1, 1, 1, 0), labels = c("<25", ">25")) # 0 = <25, 1 = >25
+income <- factor(c(0, 0, 1, 0, 0, 1), labels = c(">50k", "<50k")) # 0 = >50K, 1 = <50K
+gender <- factor(c(0, 1, 1, 1, 0, 0), labels = c("M", "F")) # 0 = M, 1 = F
+risk <- factor(c(0, 0, 0, 1, 1, 0), labels = c("High", "Low")) # 0 = High, 1 = Low
+
+df <- data.frame(age, income, gender, risk)
+
+df
+
+library(dplyr)
+
+calcEntropy <- function(split.factor, outcome){
+  # get proportions
+  proportions = sapply(split(split.factor, split.factor),
+                       function(level, total){length(level)/total},
+                       total = length(split.factor))
+  if(identical(split.factor, outcome)){
+    sum(sapply(proportions, function(x) -x * log(x, 2)))
+  }else{
+  # put in data frame, group by factor and outcome,
+  # get total counts
+  df = data.frame(split.factor, outcome, I = 1)
+  df = group_by(df, split.factor, outcome)
+  df.sum = summarize(df, count = sum(I))
+  # get the levels of the split.factor and subset
+  split.levels = levels(split.factor)
+  df.split1 = filter(df.sum, split.factor == split.levels[1])
+  # entropy of outcome after split, level 1
+  entropy1 = sapply(df.split1$count, function(x, total) {x/total},
+                    total = sum(df.split1$count))
+  entropy1 = sum(sapply(entropy1, function(x) -x * log(x, 2)))
+  # entropy of outcome after split, level 1
+  df.split2 = filter(df.sum, split.factor == split.levels[2])
+  entropy2 = sapply(df.split2$count, function(x, total) {x/total},
+                    total = sum(df.split2$count))
+  entropy2 = sum(sapply(entropy2, function(x) -x * log(x, 2)))
+  # sum entropies proportionally
+  proportions[[1]] * entropy1 + proportions[[2]] * entropy2
+  }
+}
+
+```
+
+If we calculate the entropy using the Gender column, this is the output of the function.
+
+```{r}
+calcEntropy(gender, risk)
+```
+
+I loop through all of the columns of the data frame, including the Risk column to get the initial entropy, and I get the change in entropy for each factor.
+
+```{r}
+entropy.list <- lapply(df, calcEntropy, outcome = df$risk)
+
+information.gain <- entropy.list[[4]] - unlist(entropy.list[1:3]) 
+
+information.gain
+
+```
+The result indicates that Age is the first factor to split on.
+
+Next we split the table using Age.
+
+```{r}
+df.age.split <- lapply(levels(age), 
+                       function(i) df[df$age == i, 
+                                      c("income", "gender", "risk")])
+
+df.age.split
+
+```
+The first data frame in the `df.age.split` object has 0 entropy as a starting point, so there won't be any information gain. So we find the entropy when we split the second data frame using the remaining factors.
+
+```{r}
+df2 <- df.age.split[[2]]
+
+entropy.list2 <- lapply(df2, calcEntropy, 
+                        outcome = df2$risk)
+
+information.gain2 <- entropy.list[[3]] - unlist(entropy.list2[1:2])
+
+information.gain2
+```
+
+We can see that Income has the highest information gain, so we split on that factor next.
+
+Now we split the data by Income and we can see that there will be no information gained from the Gender factor.
+
+```{r}
+df.income.split <- lapply(levels(income),
+                          function(i) df2[df2$income == i,
+                                          c("gender", "risk")])
+df.income.split
+```
+
+So we stop here.
+                                                    
+
 # Question 4
 
 A linear SVM is used to analyze a 2-dimensional data set, and the solution $\alpha $ to the quadratic programming program contains only three non-zero elements $\alpha _{1} = 0.05 $, $\alpha _{2} = 0.05 $, and $\alpha_{3} = 0.1 $. The corresponding input data points are $\mathbf{x}_{1} = [0,3]^{T} $, $y_{1} = 1 $, $\mathbf{x}_{2} = [2,4]^{T} $, $y_{2} = 1$, $\mathbf{x}_{3} = [3,-0.5]^{T} $, $y_{3} = -1 $. Compute the weight vector **w** and parameter b for the separating line with the maximum margin (15 points). Compute the margin of the separating line (10 points). 
+
+# Answer 4
+
+$$\mathbf{w} = \sum \alpha y \boldsymbol{x} =0.05 \cdot 1 \cdot \begin{bmatrix}
+0\\ 
+3
+\end{bmatrix}
++ 0.05 \cdot1 \cdot \begin{bmatrix}
+2\\
+4
+\end{bmatrix}
+0.1 \cdot -1 \cdot \begin{bmatrix} 
+3\\
+-0.5
+\end{bmatrix} = \begin{bmatrix} 
+-0.2\\
+0.4
+\end{bmatrix}$$
+
+$$y_{n}(\mathbf{w}^{\mathbf{T}}\mathbf{x}_{n}+b)=1$$
+
+$$1(\begin{bmatrix}
+-0.2 & 0.4
+\end{bmatrix} \begin{bmatrix} 
+0\\
+3
+\end{bmatrix}+b)=1$$
+
+$$b = -0.2 $$
+
+$$margin = \frac{1}{\left \| \mathbf{w} \right \|}=\sqrt{-0.2^{2}+0.4^2}=0.447$$
