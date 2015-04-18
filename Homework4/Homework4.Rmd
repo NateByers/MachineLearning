@@ -55,6 +55,105 @@ In the following Hidden Markov model, the observation sequence is TTHH. If the h
 
 # Answer 2
 
+The probabilities of getting a heads or tails, given that it's a fair or biased coin, are:
+$$P(H|F)=P(T|F)=0.5, P(H|B)= 0.75, P(T|B) = 0.25$$
+
+The transition probabilities are:
+$$a_{\textsc{FF}}=a_{\textsc{BB}}=0.7, a_{\textsc{BF}}=a_{\textsc{FB}}=0.3$$
+
+The probability that the fair/biased sequence BBFF would give a coin flip sequence TTHH is:
+$$P(\mathbf{x}=TTHH|\mathbf{\pi}=BBFF)=(0.5\times 0.25)(0.7\times 0.25)(0.3\times 0.5)(0.7 \times 0.5)=0.00115$$
+
+I use the `diagram` package to draw the graph in R.
+
+```{r, message=FALSE}
+library(diagram)
+# set margins
+par(mar = c(1, 1, 1, 1))
+# open a plotting region
+openplotmat()
+# first argument of coordinates() specifies the number of elements in each row
+elpos <- coordinates (c(1, rep(2, 4)))
+# create data.frame say from what position to where
+from <- rep(1:7, each = 2)
+to <- c(2:3, rep(4:5, 2), rep(6:7, 2), rep(8:9, 2))
+arrpos <- matrix(ncol = 2, nrow = length(from))
+
+# draw arrows
+for(i in 1:length(from)){
+  arrpos[i, ] <- straightarrow(to = elpos[to[i], ], from = elpos[from[i], ],
+                lwd = 2, arr.pos = 0.6, arr.length = 0.5, endhead = FALSE)
+}
+
+# draw circles
+flip <- rep(c("T", "H"), each = 4)
+pi <- rep(c("B", "F"), 4)
+textellipse(elpos[1,], .05, lab = "start", shadow.size = 0)
+for(i in 1:(length(flip))) {
+  textellipse(elpos[i + 1,], 0.05, lab = paste(flip[i], pi[i], sep = ", "))
+}
+
+```
+
+Here I redraw with the probabilities at each state, and add the transition probabilities for the arrows.
+
+```{r}
+openplotmat()
+
+# draw arrows
+for(i in 1:length(from)){
+  straightarrow(to = elpos[to[i], ], from = elpos[from[i], ],
+                               lwd = 2, arr.pos = 0.6, arr.length = 0.5, endhead = FALSE)
+}
+
+# draw circles
+prob <- sapply(1:length(flip), function(i){
+  state <- paste(flip[i], pi[i])
+  if(state == "T B"){
+    .25
+  }else if(state == "H B"){
+    .75
+  }else{
+    .5
+  }
+})
+textellipse(elpos[1,], .05, lab = "start", shadow.size = 0)
+for(i in 1:(length(flip))) {
+  textellipse(elpos[i + 1,], 0.05, lab = prob[i])
+}
+
+pi_prob <- c(.5, .5, rep(c(.7, .3, .3, .7), 3))
+
+# draw transition probabilities
+for(i in 1:12){
+  if((i %% 2) == 0){
+    text(arrpos[i, 1] - 0.05, arrpos[i, 2], pi_prob[i])
+  }else{
+    text(arrpos[i, 1] + 0.05, arrpos[i, 2], pi_prob[i])
+  }
+  
+}
+```
+
+Below is the heaviest edge.
+
+```{r}
+openplotmat()
+edge <- c(2, 6, 9, 11)
+# draw arrows
+for(i in 1:length(from)){
+  if(i %in% edge){col <- "red"}else{col <- "black"}
+  straightarrow(to = elpos[to[i], ], from = elpos[from[i], ], lcol = col,
+                lwd = 2, arr.pos = 0.6, arr.length = 0.5, endhead = FALSE)
+}
+
+textellipse(elpos[1,], .05, lab = "start", shadow.size = 0)
+for(i in 1:(length(flip))) {
+  textellipse(elpos[i + 1,], 0.05, lab = paste(flip[i], pi[i], sep = ", "))
+}
+
+```
+
 # Question 3
 
 Using the following data set for credit card application, compute the mutual information for each feature (15 points), compute the chi-square value for each feature (15 points)  
