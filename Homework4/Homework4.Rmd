@@ -13,7 +13,7 @@ output: pdf_document
 
 # Question 1
 
-For 2-dimensional data points, we define a kernel function $K(\mathbf{x}, \mathbf{x}’) = (1+\mathbf{x}^{T}x’)^{3}$, what is its corresponding transformation function $z = \Phi(x)$. (15 points)
+For 2-dimensional data points, we define a kernel function $K(\mathbf{x}, \mathbf{x}’) = (1+\mathbf{x}^{\textsc{t}}x’)^{3}$, what is its corresponding transformation function $z = \Phi(x)$. (15 points)
 
 # Answer 1
 
@@ -125,7 +125,7 @@ for(i in 1:(length(flip))) {
 pi_prob <- c(.5, .5, rep(c(.7, .3, .3, .7), 3))
 
 # draw transition probabilities
-for(i in 1:12){
+for(i in 1:14){
   if((i %% 2) == 0){
     text(arrpos[i, 1] - 0.05, arrpos[i, 2], pi_prob[i])
   }else{
@@ -153,6 +153,7 @@ for(i in 1:(length(flip))) {
 }
 
 ```
+So the most likely hidden state is FFBB.
 
 # Question 3
 
@@ -160,8 +161,90 @@ Using the following data set for credit card application, compute the mutual inf
 
 ![table](images/table.png)
 
+# Answer 3
+
+First I calculate the mutual information for each input.
+
+```{r, message=FALSE}
+age <- factor(c(0, 0, 1, 1, 1, 0), labels = c("<25", ">25")) 
+income <- factor(c(0, 0, 1, 0, 0, 1), labels = c(">50k", "<50k")) 
+gender <- factor(c(0, 1, 1, 1, 0, 0), labels = c("M", "F")) 
+risk <- factor(c(0, 0, 0, 1, 1, 0), labels = c("High", "Low")) 
+
+df <- data.frame(age, income, gender, risk)
+
+df
+
+library(dplyr)
+
+calcMutualInform <- function(input, outcome){
+  # get priors
+  input.prior = sapply(split(input, input),
+                       function(level, total){length(level)/total},
+                       total = length(input))
+  outcome.prior = sapply(split(outcome, outcome),
+                       function(level, total){length(level)/total},
+                       total = length(input))
+  # put in data frame, group by factor and outcome,
+  # get total counts
+  df = data.frame(input, outcome, I = 1)
+  df = group_by(df, input, outcome)
+  df.sum = summarize(df, count = sum(I))
+  # calculate mutual information
+  sum(unlist(apply(df.sum, 1, function(row, n = length(input)){
+    union <- as.numeric(row["count"])/n
+    prior1 <- as.numeric(input.prior[row["input"]])
+    prior2 <- as.numeric(outcome.prior[row["outcome"]])
+    union*log(union/(prior1*prior2))
+  })))
+}
+
+lapply(df[, 1:3], calcMutualInform, outcome = df$risk)
+
+```
+
+Now I get the $\chi^{2}$ values.
+
+```{r, message=FALSE}
+calcChiSq <- function(input, outcome){
+  
+  Obs <- table(input, outcome)
+  
+  colsum <- colSums(Obs)
+  rowsum <- rowSums(Obs)
+  
+  colmatr <- matrix(rep(colsum, 2), nrow = 2, byrow = TRUE)
+  rowmatr <- matrix(rep(rowsum, 2), nrow = 2)
+  
+  E <- colmatr*rowmatr/sum(c(colsum, rowsum))
+  
+  Chi <- (Obs - E)^2/E
+  
+  sum(colSums(Chi))
+  
+}
+
+lapply(df[, 1:3], calcChiSq, outcome = df$risk)
+
+```
+
 # Question 4
 
-Given a 2-dimensional data set (0,1) (2,3), (3,4), (2,4), (4,6). Please use R to find two resulting vectors in PCA and plot the data points and the vectors (20 points).   
+Given a 2-dimensional data set (0,1), (2,3), (3,4), (2,4), (4,6). Please use R to find two resulting vectors in PCA and plot the data points and the vectors (20 points).   
 
 # Answer 4
+
+Here I find the covariance of the two vectors, use the `eigen()` function to 
+get the eigen vectors, and plot vectors along with the data.
+```{r}
+data <- matrix(c(0, 1, 2, 3, 3, 4, 2, 4, 4, 6), ncol=2, byrow=TRUE)
+cova = cov(data)
+ei = eigen(cova)
+ei$vectors
+plot (data[,1], data[,2], ylim = c(-2, 6))
+curve(x*ei$vectors[2, 1]/ei$vectors[1, 1], add=TRUE)
+curve(x*ei$vectors[2, 2]/ei$vectors[1, 2], add = TRUE)
+
+```
+
+The vectors show the direction of the largest variance in the data space.

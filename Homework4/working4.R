@@ -236,6 +236,11 @@ print(viterbi)
 
 trans <- matrix(c())
 
-
+prcomp(USArrests)  # inappropriate
+prcomp(USArrests, scale = TRUE)
+prcomp(~ Murder + Assault + Rape, data = USArrests, scale = TRUE)
+plot(prcomp(USArrests))
+summary(prcomp(USArrests, scale = TRUE))
+biplot(prcomp(USArrests, scale = TRUE))
 
 
